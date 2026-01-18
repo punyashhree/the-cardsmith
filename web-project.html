@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The CardSmith</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:Georgia,serif;
+background:linear-gradient(135deg,#667eea,#764ba2);
+min-height:100vh;
+padding:20px;
+overflow-x:hidden
+}
+
+.login-container{
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:20px
+}
+.login-box{
+background:#fff;
+border-radius:20px;
+padding:50px 40px;
+max-width:450px;
+width:100%;
+box-shadow:0 20px 60px rgba(0,0,0,.3);
+text-align:center
+}
+.login-header{
+margin-bottom:40px
+}
+.login-header h1{
+color:#667eea;
+font-size:36px;
+margin-bottom:10px
+}
+.login-header p{
+color:#666;
+font-size:16px
+}
+.input-group{
+text-align:left;
+margin-bottom:20px
+}
+.input-group label{
+display:block;
+margin-bottom:8px;
+color:#2d3748;
+font-weight:bold;
+font-size:14px
+}
+.input-group input{
+width:100%;
+padding:14px;
+border:2px solid #ddd;
+border-radius:8px;
+font-size:16px;
+font-family:Georgia,serif;
+transition:border-color .3s
+}
+.input-group input:focus{
+outline:none;
+border-color:#667eea
+}
+.login-btn{
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:#fff;
+padding:16px;
+border:none;
+border-radius:8px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+transition:.3s;
+width:100%
+}
+.login-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 16px rgba(102,126,234,.4)
+}
+
+.app-container{
+display:none
+}
+.app-container.active{
+display:block
+}
+.container{
+background:#fff;
+border-radius:20px;
+max-width:1100px;
+width:100%;
+margin:0 auto;
+box-shadow:0 20px 60px rgba(0,0,0,.3);
+overflow:hidden;
+margin-bottom:20px
+}
+.header{
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:#fff;
+padding:25px;
+text-align:center;
+position:relative
+}
+.logout-btn{
+position:absolute;
+top:25px;
+right:25px;
+padding:8px 16px;
+background:rgba(255,255,255,.2);
+color:#fff;
+border:2px solid #fff;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+transition:.3s
+}
+.logout-btn:hover{
+background:rgba(255,255,255,.3)
+}
+.content{
+display:flex;
+flex-wrap:wrap
+}
+.form-section{
+flex:1;
+min-width:300px;
+padding:30px;
+background:#f8f9fa
+}
+.card-section{
+flex:1;
+min-width:300px;
+padding:30px;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column
+}
+.form-group{margin-bottom:15px}
+label{font-weight:bold;display:block;margin-bottom:5px}
+input,textarea,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+border:2px solid #ddd;
+border-radius:6px;
+font-family:Georgia,serif
+}
+input.error{
+border-color:#e53e3e;
+background:#fff5f5
+}
+.name-error{
+color:#e53e3e;
+font-size:12px;
+margin-top:5px;
+display:none
+}
+.name-error.show{
+display:block
+}
+textarea{resize:vertical}
+.button-group{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:10px
+}
+button,.file-label{
+padding:12px 20px;
+font-weight:bold;
+cursor:pointer;
+border:none;
+border-radius:6px;
+color:#fff;
+transition:.3s;
+display:inline-block;
+text-align:center
+}
+button:hover,.file-label:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.generate-btn{background:#4a5568;flex:1}
+.preview-btn{background:#4a5568;flex:1}
+.storage-btn{background:#4a5568;flex:1}
+.feedback-btn{background:#ed8936;width:100%}
+.purchase-btn{
+background:linear-gradient(135deg,#f093fb,#f5576c);
+width:100%;
+font-size:18px;
+padding:16px;
+margin-top:10px
+}
+.purchase-btn:hover{
+background:linear-gradient(135deg,#f5576c,#f093fb)
+}
+.card{
+width:300px;
+height:420px;
+border-radius:18px;
+padding:25px;
+color:#333;
+text-align:center;
+display:flex;
+flex-direction:column;
+justify-content:center;
+position:relative;
+overflow:hidden;
+box-shadow:0 12px 35px rgba(0,0,0,.3);
+animation:cardFloat 5s ease-in-out infinite;
+transition:background .5s ease
+}
+@keyframes cardFloat{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
+}
+.card h2{margin-bottom:15px;font-size:28px}
+.card p{margin-bottom:12px;line-height:1.5}
+.card-doodle{
+position:absolute;
+border:2px solid rgba(0,0,0,.15);
+border-radius:50%;
+animation:float 6s ease-in-out infinite
+}
+.cd1{width:60px;height:60px;top:-20px;left:-20px}
+.cd2{width:40px;height:40px;top:20px;right:-15px;animation-delay:1s}
+.cd3{width:50px;height:50px;bottom:-20px;right:-20px;animation-delay:2s}
+.cd4{width:30px;height:30px;bottom:40px;left:-15px;animation-delay:3s}
+.line{
+position:absolute;
+width:80px;
+height:2px;
+background:rgba(0,0,0,.15);
+transform:rotate(45deg);
+animation:pulse 4s ease-in-out infinite
+}
+.l1{top:50px;left:40px}
+.l2{bottom:60px;right:30px;animation-delay:2s}
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-12px)}
+}
+@keyframes pulse{
+0%,100%{opacity:.3}
+50%{opacity:.7}
+}
+.price-section{
+background:#fff;
+border-radius:12px;
+padding:20px;
+margin-top:20px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+width:100%;
+max-width:300px
+}
+.price-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+padding-bottom:10px;
+border-bottom:2px solid #e2e8f0
+}
+.price-label{
+font-size:14px;
+color:#666;
+font-weight:bold
+}
+.price-value{
+font-size:24px;
+color:#667eea;
+font-weight:bold
+}
+.price-input-group{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:15px
+}
+.price-input{
+flex:1;
+padding:10px;
+border:2px solid #ddd;
+border-radius:6px;
+font-size:16px;
+font-weight:bold
+}
+.total-section{
+background:#f7fafc;
+padding:15px;
+border-radius:8px;
+margin-top:15px
+}
+.total-row{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+font-size:14px
+}
+.total-row.final{
+font-size:18px;
+font-weight:bold;
+color:#2d3748;
+padding-top:10px;
+border-top:2px solid #cbd5e0
+}
+.feedback-section{
+background:#f7fafc;
+padding:30px;
+border-top:3px solid #667eea;
+display:none
+}
+.feedback-section.show{display:block}
+.feedback-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+gap:10px
+}
+.feedback-header h2{color:#2d3748;margin:0}
+.close-btn{
+padding:8px 16px;
+background:#e53e3e;
+color:#fff;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold
+}
+.feedback-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:20px;
+max-height:400px;
+overflow-y:auto;
+padding:10px
+}
+.feedback-card{
+background:#fff;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 6px rgba(0,0,0,.1);
+border-left:4px solid #667eea
+}
+.feedback-card-header{
+display:flex;
+align-items:center;
+margin-bottom:10px
+}
+.feedback-avatar{
+width:40px;
+height:40px;
+border-radius:50%;
+background:linear-gradient(135deg,#667eea,#764ba2);
+display:flex;
+align-items:center;
+justify-content:center;
+color:#fff;
+font-weight:bold;
+margin-right:12px;
+font-size:18px
+}
+.feedback-card h3{
+margin:0;
+color:#2d3748;
+font-size:16px
+}
+.feedback-card p{
+margin:0;
+color:#4a5568;
+line-height:1.6;
+font-size:14px
+}
+.feedback-empty{
+text-align:center;
+padding:40px;
+color:#a0aec0
+}
+.feedback-divider{
+border-top:2px solid #ddd;
+padding-top:15px;
+margin-top:15px
+}
+.helper-text{
+font-size:12px;
+color:#666;
+margin-top:8px;
+font-style:italic
+}
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+z-index:1000;
+justify-content:center;
+align-items:center;
+animation:fadeIn .3s
+}
+.modal.show{display:flex}
+@keyframes fadeIn{
+from{opacity:0}
+to{opacity:1}
+}
+.modal-content{
+background:#fff;
+border-radius:20px;
+padding:40px;
+max-width:500px;
+width:90%;
+box-shadow:0 20px 60px rgba(0,0,0,.3);
+animation:slideUp .3s;
+max-height:90vh;
+overflow-y:auto
+}
+@keyframes slideUp{
+from{transform:translateY(50px);opacity:0}
+to{transform:translateY(0);opacity:1}
+}
+.modal-header{
+text-align:center;
+margin-bottom:25px
+}
+.modal-header h2{
+color:#2d3748;
+margin-bottom:10px
+}
+.success-icon{
+font-size:60px;
+margin-bottom:15px
+}
+.order-details{
+background:#f7fafc;
+padding:20px;
+border-radius:12px;
+margin:20px 0
+}
+.detail-row{
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+border-bottom:1px solid #e2e8f0
+}
+.detail-row:last-child{border:none}
+.detail-label{
+color:#666;
+font-weight:bold
+}
+.detail-value{
+color:#2d3748;
+font-weight:bold
+}
+.modal-buttons{
+display:flex;
+gap:10px;
+margin-top:20px
+}
+.modal-btn{
+flex:1;
+padding:14px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+font-size:16px
+}
+.btn-primary{
+background:#667eea;
+color:#fff
+}
+.btn-secondary{
+background:#e2e8f0;
+color:#2d3748
+}
+.order-number{
+font-size:24px;
+color:#667eea;
+font-weight:bold;
+margin:10px 0
+}
+@media(max-width:768px){
+.content{flex-direction:column}
+.card{width:260px;height:380px}
+.feedback-grid{grid-template-columns:1fr}
+.price-section{max-width:100%}
+.modal-content{padding:25px}
+.login-box{padding:30px 25px}
+.logout-btn{position:static;margin-bottom:15px}
+}
+</style>
+</head>
+
+<body>
+<div class="login-container" id="loginPage">
+<div class="login-box">
+<div class="login-header">
+<h1>The CardSmith</h1>
+<p>Create, Customize & Purchase Premium Greeting Cards</p>
+</div>
+<div>
+<div class="input-group">
+<label>Username</label>
+<input type="text" id="username" placeholder="Enter your username">
+</div>
+<div class="input-group">
+<label>Password</label>
+<input type="password" id="password" placeholder="Enter your password">
+</div>
+<button class="login-btn" id="loginBtn">Login</button>
+</div>
+</div>
+</div>
+
+<div class="app-container" id="appContainer">
+<div class="container">
+<div class="header">
+<button class="logout-btn" id="logoutBtn">Logout</button>
+<h1>The CardSmith</h1>
+<p>Create, Customize & Purchase Premium Greeting Cards</p>
+</div>
+
+<div class="content">
+<div class="form-section">
+<div class="form-group">
+<label>Card Type</label>
+<select id="cardType">
+<option value="birthday">Birthday Card</option>
+<option value="graduation">Graduation Card</option>
+<option value="anniversary">Anniversary Card</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Recipient Name</label>
+<input type="text" id="recipientName" placeholder="Enter recipient name">
+<div class="name-error" id="recipientError">Only letters are allowed in the name</div>
+</div>
+
+<div class="form-group">
+<label>Your Name</label>
+<input type="text" id="senderName" placeholder="Enter your name">
+<div class="name-error" id="senderError">Only letters are allowed in the name</div>
+</div>
+
+<div class="form-group">
+<label>Message</label>
+<textarea id="customMessage" rows="4" placeholder="Your custom message or click Generate"></textarea>
+</div>
+
+<div class="button-group">
+<button class="generate-btn" id="generateBtn">Generate</button>
+<button class="preview-btn" id="previewBtn">Preview</button>
+<button class="storage-btn" id="saveBtn">Save</button>
+<label class="storage-btn file-label">
+Load
+<input type="file" id="fileInput" accept=".txt" style="display:none">
+</label>
+</div>
+
+<div class="feedback-divider">
+<label class="feedback-btn file-label">
+Load Feedback Data
+<input type="file" id="feedbackInput" accept=".txt" style="display:none">
+</label>
+<p class="helper-text">Upload a text file with feedback (Format: Name: Message per line)</p>
+</div>
+</div>
+
+<div class="card-section">
+<div class="card" id="card">
+<div class="card-doodle cd1"></div>
+<div class="card-doodle cd2"></div>
+<div class="card-doodle cd3"></div>
+<div class="card-doodle cd4"></div>
+<div class="line l1"></div>
+<div class="line l2"></div>
+<h2 id="cardTitle">Happy Birthday</h2>
+<p id="cardMessage">Your message will appear here</p>
+<p id="cardFrom">- You</p>
+</div>
+
+<div class="price-section">
+<div class="price-header">
+<span class="price-label">Card Price</span>
+<span class="price-value" id="displayPrice">Rs 50</span>
+</div>
+
+
+
+<div class="form-group">
+<label>Quantity</label>
+<input type="number" id="quantity" value="1" min="1" max="100" style="text-align:center">
+</div>
+
+<div class="total-section">
+<div class="total-row">
+<span>Subtotal:</span>
+<span id="subtotal">Rs 50</span>
+</div>
+<div class="total-row">
+<span>Shipping:</span>
+<span id="shipping">Rs 50</span>
+</div>
+<div class="total-row final">
+<span>Total:</span>
+<span id="total">Rs 100</span>
+</div>
+</div>
+
+<button class="purchase-btn" id="purchaseBtn">Purchase Card</button>
+</div>
+</div>
+</div>
+
+<div class="feedback-section" id="feedbackSection">
+<div class="feedback-header">
+<h2 id="feedbackTitle">Customer Feedback (0)</h2>
+<button class="close-btn" id="closeFeedbackBtn">Close</button>
+</div>
+<div class="feedback-grid" id="feedbackGrid">
+<div class="feedback-empty">
+<p>No feedback data loaded yet. Upload a feedback file to display data.</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal" id="purchaseModal">
+<div class="modal-content">
+<div class="modal-header">
+<div class="success-icon">✓</div>
+<h2>Order Confirmed!</h2>
+<p style="color:#666">Thank you for your purchase</p>
+</div>
+
+<div class="order-details">
+<div class="order-number" id="orderNumber">Order #12345</div>
+<div class="detail-row">
+<span class="detail-label">Card Type:</span>
+<span class="detail-value" id="orderCardType">Birthday</span>
+</div>
+<div class="detail-row">
+<span class="detail-label">Recipient:</span>
+<span class="detail-value" id="orderRecipient">Friend</span>
+</div>
+<div class="detail-row">
+<span class="detail-label">Quantity:</span>
+<span class="detail-value" id="orderQuantity">1</span>
+</div>
+<div class="detail-row">
+<span class="detail-label">Total Amount:</span>
+<span class="detail-value" id="orderTotal">Rs 10</span>
+</div>
+</div>
+<p style="text-align:center;color:#666;font-size:14px;margin:15px 0">
+Your card will be printed and shipped within 2-3 business days.
+</p>
+
+<div class="modal-buttons">
+<button class="modal-btn btn-primary" id="downloadReceiptBtn">Download Receipt</button>
+<button class="modal-btn btn-secondary" id="closeModalBtn">Close</button>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+document.getElementById('loginBtn').onclick = function() {
+var u = document.getElementById('username').value.trim();
+var p = document.getElementById('password').value.trim();
+if (u && p) {
+document.getElementById('loginPage').style.display = 'none';
+document.getElementById('appContainer').classList.add('active');
+} else {
+alert('Please enter both username and password');
+}
+};
+
+document.getElementById('logoutBtn').onclick = function() {
+document.getElementById('loginPage').style.display = 'flex';
+document.getElementById('appContainer').classList.remove('active');
+document.getElementById('username').value = '';
+document.getElementById('password').value = '';
+};
+
+function validateName(input, errorEl) {
+var val = input.value;
+var ok = /^[A-Za-z\s]*$/;
+if (val && !ok.test(val)) {
+input.classList.add('error');
+errorEl.classList.add('show');
+return false;
+} else {
+input.classList.remove('error');
+errorEl.classList.remove('show');
+return true;
+}
+}
+
+var recipient = document.getElementById('recipientName');
+var sender = document.getElementById('senderName');
+var recipientError = document.getElementById('recipientError');
+var senderError = document.getElementById('senderError');
+
+recipient.oninput = function() { validateName(recipient, recipientError); };
+sender.oninput = function() { validateName(sender, senderError); };
+
+var cardType = document.getElementById('cardType');
+var message = document.getElementById('customMessage');
+var cardTitle = document.getElementById('cardTitle');
+var cardMessage = document.getElementById('cardMessage');
+var cardFrom = document.getElementById('cardFrom');
+var card = document.getElementById('card');
+var displayPrice = document.getElementById('displayPrice');
+var quantity = document.getElementById('quantity');
+
+var titles = {
+birthday: 'Happy Birthday',
+graduation: 'Congratulations',
+anniversary: 'Happy Anniversary'
+};
+
+var messages = {
+birthday: [
+'Wishing you a joyful and memorable day',
+'May this day bring happiness and warmth',
+'Sending you good wishes and positivity',
+'YAAAYYY HAPPY BIRTHDAY TO YOU, HOPE YOU HAVE THE BEST YEAR'
+],
+graduation: [
+'Wishing you success in your next chapter',
+'Your dedication has truly paid off',
+'Best wishes for your future journey'
+],
+anniversary: [
+'Wishing you continued happiness together',
+'May your bond grow stronger every year',
+'Celebrating a meaningful journey together'
+]
+};
+
+var colors = {
+birthday: 'linear-gradient(135deg,#fff7cc,#ffe699)',
+graduation: 'linear-gradient(135deg,#e6f7ef,#bfe8cf)',
+anniversary: 'linear-gradient(135deg,#fde2ec,#f8b6cc)'
+};
+
+function updatePricing() {
+var price = 50;
+var qty = parseInt(quantity.value) || 1;
+var sub = price * qty;
+var ship = qty <= 2 ? 50 : qty <= 5 ? 100 : 150;
+var tot = sub + ship;
+displayPrice.textContent = 'Rs ' + price;
+document.getElementById('subtotal').textContent = 'Rs ' + sub.toFixed(2);
+document.getElementById('shipping').textContent = 'Rs ' + ship;
+document.getElementById('total').textContent = 'Rs ' + tot.toFixed(2);
+}
+
+quantity.oninput = updatePricing;
+
+document.getElementById('generateBtn').onclick = function() {
+var type = cardType.value;
+var name = recipient.value || 'Friend';
+var list = messages[type];
+message.value = list[Math.floor(Math.random() * list.length)] + ' ' + name;
+};
+
+document.getElementById('previewBtn').onclick = function() {
+if (!validateName(recipient, recipientError) || !validateName(sender, senderError)) {
+alert('Please correct the name fields');
+return;
+}
+var type = cardType.value;
+card.style.background = colors[type];
+cardTitle.textContent = titles[type];
+cardMessage.textContent = message.value || 'Your message will appear here';
+cardFrom.textContent = '- ' + (sender.value || 'You');
+};
+
+document.getElementById('saveBtn').onclick = function() {
+var txt = message.value;
+if (!txt) { alert('Nothing to save'); return; }
+var blob = new Blob([txt], {type: 'text/plain'});
+var a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = 'card_message.txt';
+a.click();
+URL.revokeObjectURL(a.href);
+};
+
+document.getElementById('fileInput').onchange = function(e) {
+var file = e.target.files[0];
+if (!file) return;
+var reader = new FileReader();
+reader.onload = function(ev) {
+message.value = ev.target.result;
+cardMessage.textContent = ev.target.result;
+cardFrom.textContent = '- ' + (sender.value || 'You');
+};
+reader.readAsText(file);
+};
+
+document.getElementById('feedbackInput').onchange = function(e) {
+var file = e.target.files[0];
+if (!file) return;
+var reader = new FileReader();
+reader.onload = function(ev) {
+var content = ev.target.result;
+var lines = content.split('\n').filter(function(l) { return l.trim(); });
+if (!lines.length) { alert('Empty file'); return; }
+var data = lines.map(function(line, i) {
+var parts = line.split(':');
+if (parts.length >= 2) {
+return { id: i, name: parts[0].trim(), message: parts.slice(1).join(':').trim() };
+}
+return { id: i, name: 'Anonymous', message: line.trim() };
+});
+displayFeedback(data);
+};
+reader.readAsText(file);
+};
+
+function displayFeedback(data) {
+var grid = document.getElementById('feedbackGrid');
+var title = document.getElementById('feedbackTitle');
+grid.innerHTML = '';
+title.textContent = 'Customer Feedback (' + data.length + ')';
+document.getElementById('feedbackSection').classList.add('show');
+if (!data.length) {
+grid.innerHTML = '<div class="feedback-empty"><p>No data</p></div>';
+return;
+}
+data.forEach(function(f) {
+var div = document.createElement('div');
+div.className = 'feedback-card';
+var init = f.name.charAt(0).toUpperCase();
+div.innerHTML = '<div class="feedback-card-header"><div class="feedback-avatar">' + init + '</div><h3>' + f.name + '</h3></div><p>' + f.message + '</p>';
+grid.appendChild(div);
+});
+}
+
+document.getElementById('closeFeedbackBtn').onclick = function() {
+document.getElementById('feedbackSection').classList.remove('show');
+};
+
+document.getElementById('purchaseBtn').onclick = function() {
+if (!validateName(recipient, recipientError) || !validateName(sender, senderError)) {
+alert('Fix name fields');
+return;
+}
+if (!message.value) {
+alert('Create a message first');
+return;
+}
+var num = Math.floor(100000 + Math.random() * 900000);
+var recip = recipient.value || 'Friend';
+var type = cardType.value;
+var qty = parseInt(quantity.value) || 1;
+var tot = document.getElementById('total').textContent;
+document.getElementById('orderNumber').textContent = 'Order #' + num;
+document.getElementById('orderCardType').textContent = titles[type];
+document.getElementById('orderRecipient').textContent = recip;
+document.getElementById('orderQuantity').textContent = qty;
+document.getElementById('orderTotal').textContent = tot;
+document.getElementById('purchaseModal').classList.add('show');
+};
+
+document.getElementById('closeModalBtn').onclick = function() {
+document.getElementById('purchaseModal').classList.remove('show');
+};
+
+document.getElementById('downloadReceiptBtn').onclick = function() {
+var num = document.getElementById('orderNumber').textContent;
+var type = document.getElementById('orderCardType').textContent;
+var recip = document.getElementById('orderRecipient').textContent;
+var qty = document.getElementById('orderQuantity').textContent;
+var tot = document.getElementById('orderTotal').textContent;
+var sub = document.getElementById('subtotal').textContent;
+var ship = document.getElementById('shipping').textContent;
+var receipt = '\n===============================================\n         THE CARDSMITH\n           PURCHASE RECEIPT\n===============================================\n\n' + num + '\nDate: ' + new Date().toLocaleString() + '\n\n-----------------------------------------------\nORDER DETAILS\n-----------------------------------------------\nCard Type:        ' + type + '\nRecipient:        ' + recip + '\nSender:           ' + (sender.value || 'You') + '\nQuantity:         ' + qty + '\n\nMessage:\n' + message.value + '\n\n-----------------------------------------------\nPRICING BREAKDOWN\n-----------------------------------------------\nSubtotal:         ' + sub + '\nShipping:         ' + ship + '\n-----------------------------------------------\nTOTAL:            ' + tot + '\n-----------------------------------------------\n\nDelivery: 2-3 Business Days\nContact: support@thecardsmith.com\n\nThank you!\n===============================================\n';
+var blob = new Blob([receipt], {type: 'text/plain'});
+var a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = 'Receipt_' + num.replace('#', '') + '.txt';
+a.click();
+URL.revokeObjectURL(a.href);
+alert('Receipt downloaded!');
+};
+
+document.getElementById('purchaseModal').onclick = function(e) {
+if (e.target === this) {
+this.classList.remove('show');
+}
+};
+
+updatePricing();
+</script>
+</body>
+</html>
