@@ -1,10 +1,10 @@
 # The CardSmith - Greeting Card Generator & Store
 
-## 📋 Project Overview
+## Project Overview
 
 **The CardSmith** is a web-based application that allows users to create, customize, and purchase personalized greeting cards online. This single-page application provides an intuitive interface for designing cards for various occasions like birthdays, graduations, and anniversaries.
 
-## 🎯 Project Objectives
+## Project Objectives
 
 1. **Simplify Card Creation**: Enable users to generate personalized greeting cards with minimal effort
 2. **Customization**: Allow users to customize messages, recipient names, and card types
@@ -12,7 +12,7 @@
 4. **User Feedback Management**: Support uploading and displaying customer feedback
 5. **Data Persistence**: Enable saving and loading of card messages for future use
 
-## ✨ Key Features
+## Key Features
 
 ### 1. User Authentication
 - Secure login system with username and password validation
@@ -21,7 +21,7 @@
 
 ### 2. Card Customization
 - **Multiple Card Types**: Birthday, Graduation, and Anniversary cards
-- **Auto-Generate Messages**: AI-powered message generation based on card type
+- **Auto-Generate Messages**: Message generation based on card type
 - **Custom Messages**: Users can write their own personalized messages
 - **Recipient & Sender Names**: Personalize cards with names (letters-only validation)
 - **Live Preview**: Real-time card preview with dynamic color themes
@@ -31,7 +31,6 @@
 - **Quantity Selection**: Order 1-100 cards at once
 - **Dynamic Pricing Calculation**:
   - Subtotal calculation (Price × Quantity)
-  - 18% GST automatic calculation
   - Tiered shipping costs:
     - 1-2 cards: Rs 50
     - 3-5 cards: Rs 100
@@ -56,7 +55,7 @@
 - **Purchase Validation**: Ensures valid names before completing purchase
 - **Empty Field Checks**: Prevents submission with incomplete data
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 ### Frontend
 - **HTML5**: Semantic markup and structure
@@ -72,7 +71,7 @@
   - File upload and download functionality
   - Dynamic pricing calculations
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 the-cardsmith/
@@ -81,7 +80,7 @@ the-cardsmith/
 └── README.md          # Project documentation
 ```
 
-## 🚀 How to Run
+## How to Run
 
 1. **Download the Project**
    - Download `index.html` file
@@ -102,7 +101,7 @@ the-cardsmith/
    - Adjust quantity if needed
    - Click "Purchase Card" to complete order
 
-## 💡 Usage Guide
+## Usage Guide
 
 ### Creating a Card
 
@@ -142,24 +141,7 @@ the-cardsmith/
 3. **View**: Feedback appears in card grid below
 4. **Close**: Click "Close" button to hide feedback section
 
-## 🎨 Design Highlights
-
-- **Modern Gradient UI**: Purple gradient theme throughout
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Smooth Animations**: 
-  - Floating card animation
-  - Button hover effects with lift
-  - Modal slide-up animation
-- **Professional Color Scheme**:
-  - Primary: Purple (#667eea, #764ba2)
-  - Secondary: Dark gray (#4a5568)
-  - Accent: Pink gradient (#f093fb, #f5576c)
-- **Card-Specific Themes**:
-  - Birthday: Yellow gradient
-  - Graduation: Green gradient
-  - Anniversary: Pink gradient
-
-## 📊 Business Model
+## Business Model
 
 ### Revenue Streams
 1. **Card Sales**: Rs 50 per card (fixed pricing)
@@ -171,198 +153,15 @@ the-cardsmith/
 - **Shipping**: Tiered based on order size
 - **Platform Maintenance**: Web hosting and domain
 
-### Value Proposition
-- **Convenience**: Create cards online in minutes
-- **Personalization**: Unique messages for each recipient
-- **Quality**: Professional card designs
-- **Affordability**: Fixed transparent pricing
-
 ### Target Market
 - Individuals celebrating personal occasions
 - Businesses sending cards to employees/clients
 - Event planners needing bulk cards
-- Students and young professionals (primary demographic)
+- Students and young professionals
 
-## 🔧 Customization Guide
-
-### Adding a New Card Type
-
-1. **HTML Dropdown** (around line 500):
-```html
-<option value="newtype">New Type Card</option>
-```
-
-2. **JavaScript Titles Object** (around line 700):
-```javascript
-var titles = {
-  birthday: 'Happy Birthday',
-  graduation: 'Congratulations',
-  anniversary: 'Happy Anniversary',
-  newtype: 'New Type Title'
-};
-```
-
-3. **JavaScript Messages Object**:
-```javascript
-var messages = {
-  // ... existing types
-  newtype: [
-    'Message option 1',
-    'Message option 2',
-    'Message option 3'
-  ]
-};
-```
-
-4. **JavaScript Colors Object**:
-```javascript
-var colors = {
-  // ... existing types
-  newtype: 'linear-gradient(135deg,#color1,#color2)'
-};
-```
-
-### Changing Card Price
-
-Find `updatePricing()` function (around line 750):
-```javascript
-function updatePricing() {
-  var price = 50;  // Change this number
-  // ... rest of function
-}
-```
-
-### Modifying Shipping Costs
-
-In `updatePricing()` function:
-```javascript
-var ship = qty <= 2 ? 50 : qty <= 5 ? 100 : 150;
-// Change values: qty <= 2 ? 50 : qty <= 5 ? 100 : 150
-```
-
-### Changing GST Percentage
-
-In `updatePricing()` function:
-```javascript
-var gst = sub * 0.18;  // 0.18 = 18%, change to 0.12 for 12%
-```
-
-### Adding a New Input Field
-
-1. **HTML** (in form section):
-```html
-<div class="form-group">
-  <label>Field Label</label>
-  <input type="text" id="fieldId" placeholder="Enter text">
-</div>
-```
-
-2. **JavaScript Variable**:
-```javascript
-var fieldName = document.getElementById('fieldId');
-```
-
-3. **Get Value When Needed**:
-```javascript
-var value = fieldName.value;
-```
-
-## 🐛 Known Limitations
-
-1. **No Backend**: All data is session-based, resets on refresh
-2. **No Payment Gateway**: Purchase is simulated, no real payment processing
-3. **No Database**: Cannot store orders permanently
-4. **No Email Notifications**: No email confirmations sent
-5. **Browser-Based Only**: Requires modern web browser with JavaScript enabled
-
-## 🔒 Security Considerations
-
-- **Client-Side Only**: No sensitive data transmitted
-- **No Real Payments**: No financial information collected
-- **Session-Based**: Login is for demonstration purposes only
-- **Input Validation**: Name fields validated to prevent injection
-
-## 📱 Browser Compatibility
-
-- ✅ Google Chrome (v90+)
-- ✅ Mozilla Firefox (v88+)
-- ✅ Microsoft Edge (v90+)
-- ✅ Safari (v14+)
-- ✅ Opera (v76+)
-
-## 🎓 Educational Purpose
-
-This project demonstrates:
-- **HTML Structure**: Semantic markup and accessibility
-- **CSS Styling**: Modern layout techniques, animations, responsive design
-- **JavaScript Logic**: Event handling, DOM manipulation, validation, calculations
-- **UI/UX Design**: User-friendly interface, error handling, feedback
-- **E-commerce Flow**: Product selection, pricing, checkout process
-- **File Operations**: Upload/download functionality
-
-## 📈 Future Enhancements
-
-1. **Backend Integration**: 
-   - User accounts and login persistence
-   - Order history storage
-   - Payment gateway integration
-
-2. **Advanced Features**:
-   - Custom card design editor
-   - Image upload for cards
-   - Multiple language support
-   - Email delivery of cards
-
-3. **Business Features**:
-   - Discount codes
-   - Loyalty program
-   - Corporate bulk ordering portal
-   - Subscription service
-
-4. **Technical Improvements**:
-   - Database for order management
-   - API for third-party integrations
-   - Mobile app version
-   - Real-time collaboration
-
-## 👨‍💻 Developer Information
+## Developer Information
 
 **Project Name**: The CardSmith  
-**Version**: 1.0.0  
+**Name**: Punyashree G
 **Type**: Web Application (Single Page Application)  
-**Development Stack**: HTML5, CSS3, Vanilla JavaScript  
-**License**: Educational Project  
-
-## 📞 Support
-
-For issues or questions:
-- Create a GitHub issue (if hosted on GitHub)
-- Contact: support@thecardsmith.com (example)
-
-## 🙏 Acknowledgments
-
-- Modern web design inspiration from contemporary e-commerce sites
-- Color gradients inspired by current UI/UX trends
-- Form validation patterns from web standards
-
----
-
-**Last Updated**: January 2026  
-**Status**: Active Development / Educational Project
-
----
-
-## Quick Start Checklist
-
-- [ ] Download `index.html`
-- [ ] Open in web browser
-- [ ] Login with any credentials
-- [ ] Select card type
-- [ ] Enter names (letters only)
-- [ ] Generate or write message
-- [ ] Preview card
-- [ ] Adjust quantity
-- [ ] Purchase card
-- [ ] Download receipt
-
-**Enjoy creating beautiful personalized greeting cards with The CardSmith! 🎉**
+**Development Stack**: HTML, CSS, JavaScript
