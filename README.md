@@ -80,27 +80,6 @@ the-cardsmith/
 └── README.md          # Project documentation
 ```
 
-## How to Run
-
-1. **Download the Project**
-   - Download `index.html` file
-
-2. **Open in Browser**
-   - Double-click `index.html` to open in default browser
-   - OR right-click → Open with → Choose browser (Chrome, Firefox, Edge, etc.)
-
-3. **Login**
-   - Enter any username and password
-   - Click "Login" button
-
-4. **Start Creating Cards**
-   - Select card type from dropdown
-   - Enter recipient and sender names
-   - Click "Generate" for auto message or type custom message
-   - Click "Preview" to see card design
-   - Adjust quantity if needed
-   - Click "Purchase Card" to complete order
-
 ## Usage Guide
 
 ### Creating a Card
@@ -162,6 +141,7 @@ the-cardsmith/
 ## Developer Information
 
 **Project Name**: The CardSmith  
-**Name**: Punyashree G
+**Name**: Punyashree G  
 **Type**: Web Application (Single Page Application)  
 **Development Stack**: HTML, CSS, JavaScript
+
