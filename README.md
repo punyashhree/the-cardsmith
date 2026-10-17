@@ -15,7 +15,6 @@
 ## Key Features
 
 ### 1. User Authentication
-- Secure login system with username and password validation
 - Session management with logout functionality
 - Clean and professional login interface
 
